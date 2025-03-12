@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Param, Post, HttpStatus, HttpCode } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiParam } from '@nestjs/swagger';
 import { EventsService } from '../../libs/events/src/events.service';
 import { CreateEventDto } from '../dto/create-event.dto';
 import { PATHS } from '@app/share';
@@ -6,13 +7,21 @@ import { Types } from 'mongoose';
 import { EventDto } from '../dto/event.dto';
 import { ClubsService } from '@app/clubs/clubs.service';
 import { ClubNotFoundException } from '../exceptions/club.exceptions';
+import { ResponseDto } from '@app/share/common/dto/response.dto';
+import { EventModel } from '@app/events/event.schema';
 
+@ApiTags('Events')
 @Controller()
 export class EventsController {
   constructor(private readonly eventsService: EventsService, private readonly clubsService: ClubsService) {}
 
   @Post(PATHS.EVENTS)
   @HttpCode(HttpStatus.CREATED)
+  @ApiOperation({ summary: 'Schedule an event for a specific club' })
+  @ApiResponse({ status: HttpStatus.CREATED, description: 'The event has been successfully scheduled.' })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: 'Club not found.' })
+  @ApiParam({ name: 'id', description: 'Club ID' })
+  @ApiBody({ type: CreateEventDto })
   async create(@Param() eventParamDto: EventDto, @Body() createEventDto: CreateEventDto) {
     const club = await this.clubsService.findOne({filter: {id: new Types.ObjectId(eventParamDto.id)}});
     if (!club) {
@@ -27,12 +36,16 @@ export class EventsController {
 
   @Get(PATHS.EVENTS)
   @HttpCode(HttpStatus.OK)
-  async findByClub(@Param() eventParamDto: EventDto) {
-    return await this.eventsService.find({
+  @ApiOperation({ summary: 'Retrieve all events for a specific club' })
+  @ApiResponse({ status: HttpStatus.OK, description: 'List of events retrieved successfully.' })
+  @ApiParam({ name: 'id', description: 'Club ID' })
+  async findByClub(@Param() eventParamDto: EventDto): Promise<ResponseDto<EventModel[]>> {
+    const events = await this.eventsService.find({
       filter: {
         club_id: new Types.ObjectId(eventParamDto.id),
       },
       sort: { scheduled_at: 1 },
     });
+    return new ResponseDto<EventModel[]>(events);
   }
 } 
