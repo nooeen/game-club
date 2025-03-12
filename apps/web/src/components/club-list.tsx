@@ -4,7 +4,7 @@ import type { Club } from "../types"
 
 interface ClubListProps {
   clubs: Club[]
-  selectedClub: string | null
+  selectedClub: Club | null
   onSelectClub: (club: Club) => void
 }
 
@@ -23,7 +23,7 @@ export default function ClubList({ clubs, selectedClub, onSelectClub }: ClubList
         <li
           key={club._id}
           className={`p-3 rounded-md cursor-pointer hover:bg-muted transition-colors ${
-            selectedClub === club._id ? "bg-muted" : ""
+            selectedClub?._id === club._id ? "bg-muted" : ""
           }`}
           onClick={() => onSelectClub(club)}
         >

@@ -16,7 +16,7 @@ export default function App() {
   const [isEventsLoading, setIsEventsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const [selectedClub, setSelectedClub] = useState<string | null>(null)
+  const [selectedClub, setSelectedClub] = useState<Club | null>(null)
 
   const [isCreateClubModalOpen, setIsCreateClubModalOpen] = useState(false)
   const [isCreateEventModalOpen, setIsCreateEventModalOpen] = useState(false)
@@ -58,7 +58,7 @@ export default function App() {
 
   // Handle club selection
   const handleClubSelect = (club: Club) => {
-    setSelectedClub(club._id)
+    setSelectedClub(club)
     setIsEventsLoading(true)
     // Fetch events for this club from an API
     apiClient.getEvents(club._id).then(response => {
@@ -78,7 +78,7 @@ export default function App() {
   const handleCreateClub = (newClub: Club) => {
     setClubs([newClub, ...clubs])
     setIsCreateClubModalOpen(false)
-    setSelectedClub(newClub._id)
+    setSelectedClub(newClub)
   }
 
   // Handle event creation
@@ -124,7 +124,7 @@ export default function App() {
         {selectedClub ? (
           <>
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold">{clubs.find(club => club._id === selectedClub)?.name} Events</h2>
+              <h2 className="text-xl font-bold">{selectedClub.name} Events</h2>
               <button
                 onClick={() => setIsCreateEventModalOpen(true)}
                 className="bg-primary text-primary-foreground px-4 py-2 rounded-md"
@@ -152,7 +152,7 @@ export default function App() {
           isOpen={isCreateEventModalOpen}
           onClose={() => setIsCreateEventModalOpen(false)}
           onCreateEvent={handleCreateEvent}
-          clubId={selectedClub}
+          clubId={selectedClub._id}
         />
       )}
     </main>
