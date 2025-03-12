@@ -1,10 +1,19 @@
 import { BaseSchema } from "@app/share";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose, { Types } from "mongoose";
+import { ApiProperty } from "@nestjs/swagger";
+import mongoose from "mongoose";
+
+export class Club {
+  @ApiProperty({ type: String, description: 'The name of the club', required: true })
+  name: string;
+  
+  @ApiProperty({ type: String, description: 'The description of the club', required: false })
+  description: string;
+}
 
 @Schema({
   // _id: false,
-  // id: false,
+  id: false,
   timestamps: {
     createdAt: "created_at",
     updatedAt: "updated_at",
@@ -14,7 +23,7 @@ import mongoose, { Types } from "mongoose";
   },
   versionKey: false,
 })
-export class ClubModel extends BaseSchema {
+export class ClubModel extends BaseSchema implements Club {
   @Prop({
     type: String,
     required: true,

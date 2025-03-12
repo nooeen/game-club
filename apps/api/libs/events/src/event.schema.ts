@@ -1,11 +1,23 @@
 import { ClubModel } from "@app/clubs/club.schema";
 import { BaseSchema } from "@app/share";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { ApiProperty } from "@nestjs/swagger";
 import mongoose, { Types } from "mongoose";
+
+export class Event {
+  @ApiProperty({ type: String, description: 'The title of the event', required: true })
+  title: string;
+
+  @ApiProperty({ type: String, description: 'The description of the event', required: false })
+  description: string;
+
+  @ApiProperty({ type: Date, description: 'The scheduled date of the event', required: true })
+  scheduled_at: Date;
+}
 
 @Schema({
   // _id: false,
-  // id: false,
+  id: false,
   timestamps: {
     createdAt: "created_at",
     updatedAt: "updated_at",
@@ -15,7 +27,7 @@ import mongoose, { Types } from "mongoose";
   },
   versionKey: false,
 })
-export class EventModel extends BaseSchema {
+export class EventModel extends BaseSchema implements Event {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: ClubModel.name,
