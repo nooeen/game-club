@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ClubModel, ClubSchema } from './club.schema';
+import { ClubSchema } from './club.schema';
 import { ClubsRepository } from './clubs.repository';
 import { ClubsService } from './clubs.service';
 import { COLLECTIONS } from '@app/share';
