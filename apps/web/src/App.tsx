@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import type { Club, Event } from "@/types"
 import ClubList from "@/components/club-list"
 import EventList from "@/components/event-list"
@@ -12,20 +12,35 @@ export default function App() {
   const [clubs, setClubs] = useState<Club[]>([])
   const [events, setEvents] = useState<Event[]>([])
 
+  const [isClubsLoading, setIsClubsLoading] = useState(true)
+  const [isEventsLoading, setIsEventsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
 
   const [selectedClub, setSelectedClub] = useState<string | null>(null)
 
   const [isCreateClubModalOpen, setIsCreateClubModalOpen] = useState(false)
   const [isCreateEventModalOpen, setIsCreateEventModalOpen] = useState(false)
 
+  const [searchQuery, setSearchQuery] = useState<string>("")
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>("")
+
+  // Update debounced search query after a delay
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery)
+    }, 300) // 300ms delay
+
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [searchQuery])
+
   // Fetch clubs from the API
   useEffect(() => {
     const fetchClubs = async () => {
       try {
-        setIsLoading(true)
-        const clubsData = await apiClient.getClubs()
+        setIsClubsLoading(true)
+        const clubsData = await apiClient.getClubs(debouncedSearchQuery)
         setClubs(clubsData.data)
       } catch (err) {
         if (err instanceof Error) {
@@ -34,25 +49,28 @@ export default function App() {
           setError("An unknown error occurred")
         }
       } finally {
-        setIsLoading(false)
+        setIsClubsLoading(false)
       }
     }
 
     fetchClubs()
-  }, [])
+  }, [debouncedSearchQuery]) // Use debouncedSearchQuery as a dependency
 
   // Handle club selection
   const handleClubSelect = (club: Club) => {
     setSelectedClub(club._id)
+    setIsEventsLoading(true)
     // Fetch events for this club from an API
     apiClient.getEvents(club._id).then(response => {
       setEvents(response.data) // Ensure response.data is of type Event[]
+      setIsEventsLoading(false)
     }).catch(err => {
       if (err instanceof Error) {
         setError(err.message)
       } else {
         setError("An unknown error occurred")
       }
+      setIsEventsLoading(false)
     })
   }
 
@@ -69,6 +87,11 @@ export default function App() {
     setIsCreateEventModalOpen(false)
   }
 
+  // Handle search input change
+  const handleSearchChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value)
+  }, [])
+
   return (
     <main className="flex min-h-screen flex-col md:flex-row">
       <div className="w-full md:w-1/3 border-r p-4">
@@ -81,7 +104,14 @@ export default function App() {
             Create Club
           </button>
         </div>
-        {isLoading ? (
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          placeholder="Search clubs..."
+          className="w-full mb-4 p-2 border rounded-md"
+        />
+        {isClubsLoading ? (
           <div className="text-center">Loading...</div>
         ) : error ? (
           <div className="text-red-500">{error}</div>
@@ -102,7 +132,7 @@ export default function App() {
                 Create Event
               </button>
             </div>
-            <EventList events={events} />
+            <EventList events={events} isLoading={isEventsLoading} />
           </>
         ) : (
           <div className="flex items-center justify-center h-full">

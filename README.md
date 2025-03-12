@@ -1,6 +1,7 @@
 # Game Club
 
 ## Overview
+
 A RESTful API that allows users to create game clubs and schedule events, along with a basic frontend to display clubs and their upcoming events.
 
 ## Tech Stack
@@ -63,3 +64,10 @@ A RESTful API that allows users to create game clubs and schedule events, along 
 8. Access the application:
    - Open the browser and navigate to `http://localhost:4173` (or any port displayed in the terminal) to view the frontend.
    - Open the browser and navigate to `http://localhost:3000/docs` (or any port specified in the `.env` file) to view the Swagger API documentation.
+
+## Demo
+
+A demo is setup for your convenience. The frontend is deployed to Cloudflare Pages and the backend is deployed to an on-premise server.
+
+- Frontend: <https://gameclub.nvf.one>
+- API Docs: <https://gameclub-api.nvf.one/docs>

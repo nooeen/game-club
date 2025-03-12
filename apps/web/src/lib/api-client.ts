@@ -24,8 +24,8 @@ interface CreateEventRequest {
 }
 
 export const apiClient = {
-  getClubs: async (): Promise<GetClubsResponse> => {
-    const response = await fetch(`${API_URL}/clubs`, {
+  getClubs: async (search: string = ""): Promise<GetClubsResponse> => {
+    const response = await fetch(`${API_URL}/clubs?search=${encodeURIComponent(search)}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

@@ -3,9 +3,18 @@ import { format } from "date-fns"
 
 interface EventListProps {
   events: Event[]
+  isLoading: boolean
 }
 
-export default function EventList({ events }: EventListProps) {
+export default function EventList({ events, isLoading }: EventListProps) {
+  if (isLoading) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-muted-foreground">Loading events...</p>
+      </div>
+    )
+  }
+
   if (events.length === 0) {
     return (
       <div className="text-center py-8">
