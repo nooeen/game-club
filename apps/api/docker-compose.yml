@@ -1,0 +1,20 @@
+name: game-club-api-services
+services:
+
+  mongodb:
+    container_name: gc-mongodb
+    image: mongo
+    ports:
+      - '27031:27017'
+    environment:
+      - MONGO_INITDB_DATABASE=gameclub
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    restart: always
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+
+volumes:
+  mongodb_data:
+  mongodb_config:
