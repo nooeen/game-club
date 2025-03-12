@@ -3,7 +3,6 @@ module.exports = {
     {
       name: "gc-api",
       script: "./dist/main.js",
-      env,
     },
   ],
 };
