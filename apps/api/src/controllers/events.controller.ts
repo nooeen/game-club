@@ -23,7 +23,7 @@ export class EventsController {
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Schedule an event for a specific club' })
   @ApiCreatedResponse({
-    type: ResponseDto,
+    type: Event,
     description: 'The event has been successfully scheduled.',
   })
   @ApiNotFoundResponse({

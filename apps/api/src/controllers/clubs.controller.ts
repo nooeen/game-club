@@ -18,7 +18,7 @@ export class ClubsController {
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create a new game club' })
   @ApiCreatedResponse({
-    type: ResponseDto,
+    type: Club,
     description: 'The club has been successfully created.',
   })
   @ApiConflictResponse({

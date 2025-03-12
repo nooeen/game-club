@@ -4,7 +4,7 @@ export const CONFIG_KEYS = {
 
 export const PATHS = {
   CLUBS: "/clubs",
-  EVENTS: "/club/:id/events",
+  EVENTS: "/clubs/:id/events",
   SWAGGER: "/docs"
 };
 
