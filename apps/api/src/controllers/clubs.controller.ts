@@ -3,7 +3,7 @@ import { ClubsService } from '../../libs/clubs/src/clubs.service';
 import { CreateClubDto } from '../dto/create-club.dto';
 import { FindClubsDto } from '../dto/find-clubs.dto';
 import { PATHS } from '@app/share';
-import { ClubBadRequestException } from '../exceptions/club.exceptions';
+import { ClubConflictException } from '../exceptions/club.exceptions';
 
 @Controller(PATHS.CLUBS)
 export class ClubsController {
@@ -16,7 +16,7 @@ export class ClubsController {
       return await this.clubsService.create(createClubDto);
     } catch (error) {
       if (error.code === 11000) { // MongoDB duplicate key error
-        throw new ClubBadRequestException('Club name already exists');
+        throw new ClubConflictException();
       }
       throw error;
     }

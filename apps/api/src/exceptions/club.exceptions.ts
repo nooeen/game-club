@@ -1,4 +1,4 @@
-import { NotFoundException, BadRequestException } from '@nestjs/common';
+import { NotFoundException, ConflictException } from '@nestjs/common';
 
 export class ClubNotFoundException extends NotFoundException {
   constructor(message?: string) {
@@ -6,8 +6,8 @@ export class ClubNotFoundException extends NotFoundException {
   }
 }
 
-export class ClubBadRequestException extends BadRequestException {
+export class ClubConflictException extends ConflictException {
   constructor(message?: string) {
-    super(message || 'Invalid club data');
+    super(message || 'Club name already exists');
   }
 } 
