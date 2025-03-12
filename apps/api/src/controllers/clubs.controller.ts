@@ -63,6 +63,7 @@ export class ClubsController {
 
     const clubs = await this.clubsService.find({
       filter,
+      sort: { created_at: -1 },
     });
 
     return new ResponseDto<ClubModel[]>(clubs);
