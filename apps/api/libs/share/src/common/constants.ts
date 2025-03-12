@@ -7,6 +7,17 @@ export const PATHS = {
   EVENTS: "/club/:id/events"
 };
 
+export const COLLECTIONS = {
+  CLUBS: {
+    SINGULAR: 'club',
+    PLURAL: 'clubs'
+  },
+  EVENTS: {
+    SINGULAR: 'event',
+    PLURAL: 'events',
+  }
+}
+
 export const CONFIG_DEFAULT = {
   PORT: 3001,
   MONGODB_URI: "mongodb://root:example@localhost:27031/gameclub"

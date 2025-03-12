@@ -18,6 +18,18 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
+      "@app/clubs": [
+        "libs/clubs/src"
+      ],
+      "@app/clubs/*": [
+        "libs/clubs/src/*"
+      ],
+      "@app/events": [
+        "libs/events/src"
+      ],
+      "@app/events/*": [
+        "libs/events/src/*"
+      ],
       "@app/share": [
         "libs/share/src"
       ],

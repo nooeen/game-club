@@ -1,3 +1,4 @@
+import { NullableType } from "@app/share/common/ts/nullable.type";
 import { PageResponse } from "../../common/dto/page-response.dto";
 import { QueryOptions } from "../../common/ts/query-options";
 import { HydratedDocument, UpdateWriteOpResult } from "mongoose";
@@ -10,7 +11,7 @@ export interface Write<T> {
 }
 
 export interface Read<T> {
-  findOne(query: QueryOptions): Promise<HydratedDocument<T>>;
+  findOne(query: QueryOptions): Promise<NullableType<HydratedDocument<T>>>;
   find(query: QueryOptions);
   findWithPagination(query: QueryOptions): Promise<PageResponse<HydratedDocument<T>>>;
   count(query: QueryOptions): Promise<number>;

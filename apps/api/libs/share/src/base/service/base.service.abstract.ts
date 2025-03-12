@@ -15,7 +15,7 @@ export abstract class BaseServiceAbstract<T extends BaseSchema>
     return this.repository.create(item);
   }
 
-  findOne(query: QueryOptions): Promise<HydratedDocument<T>> {
+  findOne(query: QueryOptions): Promise<NullableType<HydratedDocument<T>>> {
     return this.repository.findOne(query);
   }
 

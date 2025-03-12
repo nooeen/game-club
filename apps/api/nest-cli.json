@@ -7,6 +7,24 @@
     "webpack": true
   },
   "projects": {
+    "clubs": {
+      "type": "library",
+      "root": "libs/clubs",
+      "entryFile": "index",
+      "sourceRoot": "libs/clubs/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/clubs/tsconfig.lib.json"
+      }
+    },
+    "events": {
+      "type": "library",
+      "root": "libs/events",
+      "entryFile": "index",
+      "sourceRoot": "libs/events/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/events/tsconfig.lib.json"
+      }
+    },
     "share": {
       "type": "library",
       "root": "libs/share",
